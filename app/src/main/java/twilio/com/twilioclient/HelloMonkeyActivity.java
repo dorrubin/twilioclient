@@ -28,6 +28,9 @@ public class HelloMonkeyActivity extends Activity implements View.OnClickListene
         ImageButton dialButton = (ImageButton)findViewById(R.id.dialButton);
         dialButton.setOnClickListener(this);
 
+        ImageButton textButton = (ImageButton)findViewById(R.id.textButton);
+        textButton.setOnClickListener(this);
+
         ImageButton hangupButton = (ImageButton)findViewById(R.id.hangupButton);
         hangupButton.setOnClickListener(this);
 
@@ -39,7 +42,9 @@ public class HelloMonkeyActivity extends Activity implements View.OnClickListene
     public void onClick(View view)
     {
         if (view.getId() == R.id.dialButton)
-            phone.connect(numberField.getText().toString());
+            phone.connect("15614144449");
+        else if (view.getId() == R.id.textButton)
+            phone.message(numberField.getText().toString());
         else if (view.getId() == R.id.hangupButton)
             phone.disconnect();
 

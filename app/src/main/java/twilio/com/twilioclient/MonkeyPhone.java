@@ -34,6 +34,7 @@ public class MonkeyPhone implements Twilio.InitListener
         Log.d(TAG, "Twilio SDK is ready");
 
         new RetrieveCapabilityToken().execute("http://vast-basin-8313.herokuapp.com/token");
+        Log.d(TAG, "received token");
     }
 
     private class RetrieveCapabilityToken extends AsyncTask<String, Void, String>{
@@ -74,14 +75,23 @@ public class MonkeyPhone implements Twilio.InitListener
             device.release();
     }
 
-    public void connect(String phoneNumber) {
-        Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("PhoneNumber", phoneNumber);
-        connection = device.connect(parameters, null /* ConnectionListener */);
-        if (connection == null)
-            Log.w(TAG, "Failed to create new connection");
-        // TODO Auto-generated method stub
-
+    public void message(String phoneNumber) {
+        try {
+            Map<String, String> parameters = new HashMap<String, String>();
+            parameters.put("To", phoneNumber);
+            parameters.put("From", "16179350385"); //my Twilio number
+            parameters.put("Body", "Hey Jenny! Good luck on the bar exam!");
+            connection = device.connect(parameters, null /* ConnectionListener */);
+            if (connection == null)
+                Log.e(TAG, "Failed to create new connection");
+            // TODO Auto-generated method stub
+        }
+        catch(Exception e){
+            Log.e("CATCH BLOCK",e.toString());
+        }
+        finally{
+            return;
+        }
     }
 
     public void disconnect()
@@ -91,6 +101,25 @@ public class MonkeyPhone implements Twilio.InitListener
             connection = null;
         }
         Twilio.shutdown();
+    }
+
+    public void connect(String phoneNumber) {
+        try {
+            Map<String, String> parameters = new HashMap<String, String>();
+            parameters.put("To", phoneNumber);
+            connection = device.connect(parameters, null /* ConnectionListener */);
+            if (connection == null)
+                Log.w(TAG, "Failed to create new connection");
+            // TODO Auto-generated method stub
+        }
+        catch (Exception e)
+        {
+            Log.e("CONNECTION: ", e.toString());
+        }
+        finally
+        {
+            return;
+        }
     }
 
     public State status()
